@@ -1,0 +1,29 @@
+﻿@model CasasModel;
+
+<p>HTML Plano por ahora. No quites el ID de los elementos.</p>
+
+<div>
+    <form asp-controller="Casas" asp-action="Alquilar" method="post">
+        <label for="IdCasa">Casa</label>
+        <select id="IdCasa" name="IdCasa">
+            <option value="">--Seleccione--</option>
+            @foreach (var item in ViewBag.Casas)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+
+        <label for="PrecioCasa">Precio de la casa</label>
+        <input id="PrecioCasa" name="PrecioCasa" readonly />
+
+        <label for="UsuarioAlquiler">Usuario Alquiler</label>
+        <input id="UsuarioAlquiler" name="UsuarioAlquiler" />
+
+        <button type="submit">Alquilar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/alquiler.js"></script>
+}
