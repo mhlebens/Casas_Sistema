@@ -28,3 +28,7 @@ VALUES ('Casa en Heredia',122000,NULL,NULL);
 INSERT INTO [dbo].[CasasSistema] ([DescripcionCasa],[PrecioCasa],[UsuarioAlquiler],[FechaAlquiler])
 VALUES ('Casa en Guanacaste',105000,NULL,NULL);
 GO
+
+-------------------------SP-----------------------------------------------
+--P4
+
