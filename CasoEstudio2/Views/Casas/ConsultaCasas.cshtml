@@ -1,7 +1,48 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<CasoEstudio2.Models.CasasModel>
+
 @{
+    ViewData["Title"] = "Consulta de Casas";
 }
 
-<p>Pronto....</p>
+<h2 class="mb-3">Consulta de Casas</h2>
+<p class="text-muted">Casas con precio mensual entre ₡115.000 y ₡180.000, ordenadas por disponibilidad.</p>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No hay casas en el rango de precio indicado.</div>
+}
+else
+{
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Descripción</th>
+                <th>Precio Mensual</th>
+                <th>Usuario</th>
+                <th>Estado</th>
+                <th>Fecha Alquiler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var casa in Model)
+            {
+                <tr>
+                    <td>@casa.DescripcionCasa</td>
+                    <td>₡@casa.PrecioCasa.ToString("N2")</td>
+                    <td>@(string.IsNullOrEmpty(casa.UsuarioAlquiler) ? "-" : casa.UsuarioAlquiler)</td>
+                    <td>
+                        @if (casa.Estado == "Disponible")
+                        {
+                            <span class="badge bg-success">Disponible</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Reservada</span>
+                        }
+                    </td>
+                    <td>@casa.FechaFormateada</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
