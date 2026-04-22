@@ -1,4 +1,4 @@
-﻿@model CasasModel
+﻿@model CasoEstudio2.Models.CasasModel
 
 @{
     ViewData["Title"] = "Alquiler de Casas";
@@ -9,30 +9,92 @@
     <p>Seleccione una casa disponible e ingrese el usuario que realizará el alquiler.</p>
 </div>
 
+@* ── Sin casas disponibles ── *@
+@if (TempData["SinCasas"] != null)
+{
+    <div class="aviso-sin-casas mb-4">
+        <div class="aviso-icono"><i class="fa-solid fa-building"></i></div>
+        <div>
+            <div class="aviso-titulo">Sin casas disponibles</div>
+            <div class="aviso-texto">@TempData["SinCasas"]</div>
+        </div>
+    </div>
+}
+
+@* ── Alerta de error servidor (TempData) ── *@
+@if (TempData["Error"] != null)
+{
+    <div class="alert-custom alert-custom-error mb-4" role="alert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>@TempData["Error"]</span>
+    </div>
+}
+
+@* ── Alerta de validación client-side ── *@
+<div id="alertError" class="alert-custom alert-custom-error mb-4 d-none" role="alert">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <span id="alertErrorMsg"></span>
+</div>
+
 <section class="card-ui form-card">
-    <form asp-controller="Casas" asp-action="Alquilar" method="post">
-        <div class="mb-3">
-            <label for="IdCasa" class="form-label">Casa disponible</label>
-            <select id="IdCasa" name="IdCasa" class="form-select">
-                <option value="">-- Seleccione una casa --</option>
-                @foreach (var item in ViewBag.Casas)
-                {
-                    <option value="@item.Value">@item.Text</option>
-                }
-            </select>
-        </div>
 
-        <div class="mb-3">
-            <label for="PrecioCasa" class="form-label">Precio mensual</label>
-            <input id="PrecioCasa" name="PrecioCasa" class="form-control" readonly />
-        </div>
+    <div class="form-section-title mb-4">
+        <h4>Información del alquiler</h4>
+    </div>
 
+    <form id="formAlquiler" asp-controller="Casas" asp-action="Alquilar" method="post" novalidate>
+
+        @Html.AntiForgeryToken()
+
+        @* ── Casa disponible ── *@
         <div class="mb-4">
-            <label for="UsuarioAlquiler" class="form-label">Usuario alquiler</label>
-            <input id="UsuarioAlquiler" name="UsuarioAlquiler" class="form-control" placeholder="Ingrese el nombre del usuario" />
+            <label for="IdCasa" class="form-label">
+                Casa disponible <span class="text-danger">*</span>
+            </label>
+            <select id="IdCasa"
+                    name="IdCasa"
+                    class="form-select"
+                    asp-items="@(ViewBag.Casas as Microsoft.AspNetCore.Mvc.Rendering.SelectList)">
+                <option value="">-- Seleccione una casa --</option>
+            </select>
+            <div class="form-note mt-1">Solo se muestran las casas disponibles para alquilar.</div>
+            <div class="field-error d-none" id="errIdCasa">Debe seleccionar una casa.</div>
         </div>
 
-        <button type="submit" class="btn btn-main">Alquilar</button>
+        @* ── Precio mensual (solo lectura) ── *@
+        <div class="mb-4">
+            <label for="PrecioCasa" class="form-label">Precio mensual</label>
+            <div class="input-prefix-wrapper">
+                <span class="input-prefix">&#8353;</span>
+                <input id="PrecioCasa"
+                       name="PrecioCasa"
+                       class="form-control input-with-prefix"
+                       readonly
+                       placeholder="Se carga al seleccionar una casa" />
+            </div>
+            <div class="form-note mt-1">El precio es mensual y se obtiene automáticamente.</div>
+        </div>
+
+        @* ── Usuario alquiler ── *@
+        <div class="mb-4">
+            <label for="UsuarioAlquiler" class="form-label">
+                Usuario alquiler <span class="text-danger">*</span>
+            </label>
+            <input id="UsuarioAlquiler"
+                   name="UsuarioAlquiler"
+                   class="form-control"
+                   maxlength="30"
+                   placeholder="Ingrese el nombre del usuario" />
+            <div class="field-error d-none" id="errUsuario">El usuario es obligatorio.</div>
+        </div>
+
+        @* ── Botón ── *@
+        <div class="d-grid mt-2">
+            <button type="submit" class="btn-main" id="btnAlquilar">
+                <i class="fa-solid fa-key"></i> Alquilar
+            </button>
+        </div>
+
     </form>
 </section>
 

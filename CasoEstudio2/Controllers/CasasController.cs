@@ -29,10 +29,10 @@ namespace CasoEstudio2.Controllers
 
             if (casas == null || !casas.Any())
             {
-                return NotFound("No se encontraron casas disponibles para alquilar.");
+                TempData["SinCasas"] = "No hay casas disponibles para alquilar en este momento.";
             }
 
-            ViewBag.Casas = new SelectList(casas, "IdCasa", "DescripcionCasa");
+            ViewBag.Casas = new SelectList(casas ?? Enumerable.Empty<CasasModel>(), "IdCasa", "DescripcionCasa");
 
             return View();
         }
