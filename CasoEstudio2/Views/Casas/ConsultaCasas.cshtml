@@ -4,45 +4,57 @@
     ViewData["Title"] = "Consulta de Casas";
 }
 
-<h2 class="mb-3">Consulta de Casas</h2>
-<p class="text-muted">Casas con precio mensual entre ₡115.000 y ₡180.000, ordenadas por disponibilidad.</p>
+<div class="page-heading">
+    <h2>Consulta de casas</h2>
+    <p>
+        Casas con precio mensual entre ₡115.000 y ₡180.000, ordenadas mostrando primero las disponibles.
+    </p>
+</div>
 
-@if (Model == null || !Model.Any())
-{
-    <div class="alert alert-info">No hay casas en el rango de precio indicado.</div>
-}
-else
-{
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-dark">
-            <tr>
-                <th>Descripción</th>
-                <th>Precio Mensual</th>
-                <th>Usuario</th>
-                <th>Estado</th>
-                <th>Fecha Alquiler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var casa in Model)
-            {
-                <tr>
-                    <td>@casa.DescripcionCasa</td>
-                    <td>₡@casa.PrecioCasa.ToString("N2")</td>
-                    <td>@(string.IsNullOrEmpty(casa.UsuarioAlquiler) ? "-" : casa.UsuarioAlquiler)</td>
-                    <td>
-                        @if (casa.Estado == "Disponible")
-                        {
-                            <span class="badge bg-success">Disponible</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">Reservada</span>
-                        }
-                    </td>
-                    <td>@casa.FechaFormateada</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<section class="card-ui">
+    <h3>Listado de casas</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info mt-3 mb-0">
+            No hay casas disponibles dentro del rango solicitado.
+        </div>
+    }
+    else
+    {
+        <div class="data-table-wrapper mt-3">
+            <table class="table custom-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Precio mensual</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>Fecha alquiler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var casa in Model)
+                    {
+                        <tr>
+                            <td>@casa.DescripcionCasa</td>
+                            <td>₡@casa.PrecioCasa.ToString("N2")</td>
+                            <td>@(string.IsNullOrWhiteSpace(casa.UsuarioAlquiler) ? "-" : casa.UsuarioAlquiler)</td>
+                            <td>
+                                @if (casa.Estado == "Disponible")
+                                {
+                                    <span class="badge-disponible">Disponible</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-reservada">Reservada</span>
+                                }
+                            </td>
+                            <td>@casa.FechaFormateada</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
