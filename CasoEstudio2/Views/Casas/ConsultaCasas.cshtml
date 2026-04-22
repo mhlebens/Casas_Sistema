@@ -1,7 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<CasoEstudio2.Models.CasasModel>
+
 @{
+    ViewData["Title"] = "Consulta de Casas";
 }
 
-<p>Pronto....</p>
+<div class="page-heading">
+    <h2>Consulta de casas</h2>
+    <p>
+        Casas con precio mensual entre ₡115.000 y ₡180.000, ordenadas mostrando primero las disponibles.
+    </p>
+</div>
+
+<section class="card-ui">
+    <h3>Listado de casas</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info mt-3 mb-0">
+            No hay casas disponibles dentro del rango solicitado.
+        </div>
+    }
+    else
+    {
+        <div class="data-table-wrapper mt-3">
+            <table class="table custom-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Precio mensual</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>Fecha alquiler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var casa in Model)
+                    {
+                        <tr>
+                            <td>@casa.DescripcionCasa</td>
+                            <td>₡@casa.PrecioCasa.ToString("N2")</td>
+                            <td>@(string.IsNullOrWhiteSpace(casa.UsuarioAlquiler) ? "-" : casa.UsuarioAlquiler)</td>
+                            <td>
+                                @if (casa.Estado == "Disponible")
+                                {
+                                    <span class="badge-disponible">Disponible</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-reservada">Reservada</span>
+                                }
+                            </td>
+                            <td>@casa.FechaFormateada</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

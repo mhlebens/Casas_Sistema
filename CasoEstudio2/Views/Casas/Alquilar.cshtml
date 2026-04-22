@@ -1,27 +1,40 @@
-﻿@model CasasModel;
+﻿@model CasasModel
 
-<p>HTML Plano por ahora. No quites el ID de los elementos.</p>
+@{
+    ViewData["Title"] = "Alquiler de Casas";
+}
 
-<div>
-    <form asp-controller="Casas" asp-action="Alquilar" method="post">
-        <label for="IdCasa">Casa</label>
-        <select id="IdCasa" name="IdCasa">
-            <option value="">--Seleccione--</option>
-            @foreach (var item in ViewBag.Casas)
-            {
-                <option value="@item.Value">@item.Text</option>
-            }
-        </select>
-
-        <label for="PrecioCasa">Precio de la casa</label>
-        <input id="PrecioCasa" name="PrecioCasa" readonly />
-
-        <label for="UsuarioAlquiler">Usuario Alquiler</label>
-        <input id="UsuarioAlquiler" name="UsuarioAlquiler" />
-
-        <button type="submit">Alquilar</button>
-    </form>
+<div class="page-heading">
+    <h2>Alquiler de casas</h2>
+    <p>Seleccione una casa disponible e ingrese el usuario que realizará el alquiler.</p>
 </div>
+
+<section class="card-ui form-card">
+    <form asp-controller="Casas" asp-action="Alquilar" method="post">
+        <div class="mb-3">
+            <label for="IdCasa" class="form-label">Casa disponible</label>
+            <select id="IdCasa" name="IdCasa" class="form-select">
+                <option value="">-- Seleccione una casa --</option>
+                @foreach (var item in ViewBag.Casas)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="PrecioCasa" class="form-label">Precio mensual</label>
+            <input id="PrecioCasa" name="PrecioCasa" class="form-control" readonly />
+        </div>
+
+        <div class="mb-4">
+            <label for="UsuarioAlquiler" class="form-label">Usuario alquiler</label>
+            <input id="UsuarioAlquiler" name="UsuarioAlquiler" class="form-control" placeholder="Ingrese el nombre del usuario" />
+        </div>
+
+        <button type="submit" class="btn btn-main">Alquilar</button>
+    </form>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
