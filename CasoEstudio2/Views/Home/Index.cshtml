@@ -1,8 +1,36 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="page-heading">
+    <h2>Bienvenido al sistema</h2>
+    <p>
+        Desde aquí puedes consultar las casas disponibles y registrar el alquiler de una casa.
+    </p>
 </div>
+
+<section class="card-ui home-card">
+    <h3>¿Qué puedes hacer en este sistema?</h3>
+
+    <div class="home-actions mt-4">
+        <a asp-controller="Casas" asp-action="ConsultaCasas" class="home-action-card">
+            <div class="home-action-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+            <div>
+                <h4>Consulta de casas</h4>
+                <p>Visualiza las casas dentro del rango de precio solicitado y su estado actual.</p>
+            </div>
+        </a>
+
+        <a asp-controller="Casas" asp-action="Alquilar" class="home-action-card">
+            <div class="home-action-icon">
+                <i class="fa-solid fa-key"></i>
+            </div>
+            <div>
+                <h4>Alquiler de casas</h4>
+                <p>Selecciona una casa disponible y registra la información del alquiler.</p>
+            </div>
+        </a>
+    </div>
+</section>

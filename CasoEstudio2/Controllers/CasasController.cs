@@ -27,12 +27,12 @@ namespace CasoEstudio2.Controllers
             var casas = await context.QueryAsync<CasasModel>("sp_IdCasaDropdown",
                 commandType: CommandType.StoredProcedure);
 
-            if(casas == null || !casas.Any())
+            if (casas == null || !casas.Any())
             {
-                return NotFound("No se encontraron casas disponibles para alquilar.");
+                TempData["SinCasas"] = "No hay casas disponibles para alquilar en este momento.";
             }
 
-            ViewBag.Casas = new SelectList(casas, "IdCasa", "DescripcionCasa");
+            ViewBag.Casas = new SelectList(casas ?? Enumerable.Empty<CasasModel>(), "IdCasa", "DescripcionCasa");
 
             return View();
         }
@@ -65,9 +65,14 @@ namespace CasoEstudio2.Controllers
 
         #region Casa Consulta
         [HttpGet]
-        public IActionResult ConsultaCasas()
+        public async Task<IActionResult> ConsultaCasas()
         {
-            return View();
+            using var context = _helper.CreateConnection();
+            var casas = await context.QueryAsync<CasasModel>(
+                "sp_ConsultarCasas",
+                commandType: CommandType.StoredProcedure);
+
+            return View(casas.ToList());
         }
         #endregion
     }
